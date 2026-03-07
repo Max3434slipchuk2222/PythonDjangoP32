@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mt-5">
+            <div class="card shadow-sm">
+                <div class="p-4">
+                    <h2 class="text-center mb-4">Реєстрація</h2>
+
+                    <form>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Ім'я</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Введіть своє ім'я" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Прізвище</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Введіть своє прізвище" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Електронна пошта</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="user@gmail.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Мінімум 8 символів" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Підтвердіть пароль</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Створити акаунт</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
