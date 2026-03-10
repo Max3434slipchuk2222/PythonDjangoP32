@@ -1,16 +1,41 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django_resized import ResizedImageField
+
 
 # Create your models here.
-#Клас успадковується від AbstractUser - дозволяє використовувати вбудовані механізми Django
+# Таблиці в БД
 class CustomUser(AbstractUser):
-    #три поля для зображень різних розмірів
-    #models.ImageField - створює спеціальне поле для зберігання файлів зображень
-    #Вказуємо в яку папку зберігати а також ставимо завантаження фото не обов'язковою
-    image_small = models.ImageField(upload_to='avatar/', null=True, blank=True)
-    image_medium = models.ImageField(upload_to='avatar/', null=True, blank=True)
-    image_large = models.ImageField(upload_to='avatar/', null=True, blank=True)
+    image_small = ResizedImageField(
+        size=[300, 300],
+        crop=['middle', 'center'],
+        quality=85,
+        force_format='WEBP',
+        upload_to='avatars/small/',
+        null=True,
+        blank=True
+    )
+    image_medium = ResizedImageField(
+        size=[800, 800],
+        quality=85,
+        force_format='WEBP',
+        upload_to='avatars/medium/',
+        null=True,
+        blank=True
+    )
 
-    #метод який визначає як об'єкт користувача буде відображатися в текстовому вигляді
+    image_large = ResizedImageField(
+        size=[1200, 1200],
+        quality=90,
+        force_format='WEBP',
+        upload_to='avatars/large/',
+        null=True,
+        blank=True
+    )
+
+    # image_small = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    # image_medium = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    # image_large = models.ImageField(upload_to='avatars/', null=True, blank=True)
+
     def __str__(self):
         return self.email
