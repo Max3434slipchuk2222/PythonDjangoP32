@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% load static %}
+ 
+{% block content %}
+ 
+<div class="py-5">
+
+  <div class="d-flex align-items-center justify-content-center mb-4">
+      <h2 class="fw-bold mb-5 mt-5 text-center">Категорії</h2>
+  </div>
+
+  {% if categories %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      {% for cat in categories %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="/images/categories/{{ cat.image }}"
+                   class="card-img-top"
+                   alt="{{ cat.name }}"
+                   style="height:200px; object-fit:cover;">
+ 
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold text-center">{{ cat.name }}</h5>
+              {% if cat.slug %}
+                <span class="badge bg-light text-primary border border-primary-subtle mb-2 font-monospace">
+                  {{ cat.slug }}
+                </span>
+              {% endif %}
+              <p class="card-text text-muted small flex-grow-1">
+                  {{ cat.description|truncatechars:100 }}
+              </p>
+
+              {% if user.is_authenticated %}
+                <form method="post" action="{% url 'categories:delete' cat.pk %}"
+                      onsubmit="return confirm('Видалити «{{ cat.name }}»?')"
+                      class="mt-2">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                    Видалити
+                  </button>
+                </form>
+              {% endif %}
+ 
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+ 
+  {% else %}
+    <div class="text-center py-5 text-muted">
+      <h4 class="text-center">Категорій ще немає</h4>
+    </div>
+  {% endif %}
+    {% if user.is_authenticated %}
+        <div class="d-flex justify-content-center mt-5">
+            <a href="{% url 'categories:create' %}" class="btn btn-primary">
+                Додати категорію
+            </a>
+        </div>
+    {% endif %}
+ 
+</div>
+ 
+{% endblock %}

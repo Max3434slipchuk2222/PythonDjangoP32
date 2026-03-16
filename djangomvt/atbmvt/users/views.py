@@ -42,7 +42,7 @@ def register(request):
             except Exception as e:
                 messages.error(request, f"Щось пішло не так: {str(e)}")
         else:
-            messages.success(request, 'Виправте помилки у формі')
+            messages.error(request, 'Виправте помилки у формі')
     else:
         form = CustomUserCreationForm()
 
