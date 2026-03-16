@@ -9,36 +9,44 @@ from django.contrib.auth.views import (
 )
 from django.urls import reverse_lazy
 
+from mysite import settings
 from .forms import (
     CustomUserCreationForm,
     CustomUserLoginForm,
     CustomPasswordResetForm,
     CustomSetPasswordForm,
 )
+import os
+
+from .utils import compress_image, save_custom_image
 
 
+# Create your views here.
 def register(request):
     if request.method == 'POST':
+        # print("---Зберігаємо дані користувача---")
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             try:
                 user = form.save(commit=False)
-                user.username = form.cleaned_data['email']  # email як логін
+                if 'email' in form.cleaned_data:
+                    user.username = form.cleaned_data['email']
                 if 'image' in request.FILES:
-                    image = request.FILES['image']
-                    user.image_small = image
-                    user.image_medium = image
-                    user.image_large = image
+                    image = request.FILES.get("image")
+                    user.image_small = save_custom_image(image, size=(300,300), folder="small")
+                    user.image_medium = save_custom_image(image, size=(800,800), folder="medium")
+                    user.image_large = save_custom_image(image, size=(1200,1200), folder="large")
                 user.save()
                 login(request, user)
                 return redirect('homepage')
             except Exception as e:
                 messages.error(request, f"Щось пішло не так: {str(e)}")
         else:
-            messages.error(request, 'Виправте помилки у формі')  # було success — виправлено
+            messages.success(request, 'Виправте помилки у формі')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+
+    return render(request, "register.html", {"form": form})
 
 
 def user_login(request):
