@@ -1,5 +1,4 @@
-import type { ICityCreate } from "./ICityCreate.ts";
-
-export interface ICityEdit extends ICityCreate {
+export interface ICityEdit {
     id: number;
+    formData: FormData;
 }

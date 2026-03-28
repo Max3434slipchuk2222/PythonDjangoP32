@@ -15,5 +15,18 @@ export default defineConfig({
                changeOrigin: true,
            }
        }
-  }
+  },
+  optimizeDeps: {
+        include: [
+            'antd',
+            '@ant-design/icons',
+            '@ant-design/icons/es/components/AntdIcon',
+        ],
+        force: true,
+    },
+    resolve: {
+        alias: {
+            '@ant-design/icons/es': '@ant-design/icons/lib',
+        },
+    },
 })

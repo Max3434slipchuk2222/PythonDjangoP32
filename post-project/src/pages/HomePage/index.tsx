@@ -54,27 +54,32 @@ function HomePage() {
                             className="bg-white/80 dark:bg-slate-900/80 rounded-2xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-slate-200/20 dark:hover:shadow-slate-900/20"
                         >
                             <div className="relative h-60 w-full overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                <div className="relative z-10 p-6">
-                                    <h2 className="mb-3 dark:text-white text-2xl font-semibold tracking-tight text-heading leading-8">
-                                        {city.name}
-                                    </h2>
-                                    <p className="text-body dark:text-white mb-6" dangerouslySetInnerHTML={{ __html: city.description }}></p>
-                                </div>
+                                <img
+                                    src={city.image}
+                                    alt={city.name}
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
-                            <div className="p-6 text-center">
-                                <button type="button"
-                                        onClick={() =>
-                                            deleteCityHandler(city.id)
-                                        }
-                                        className="mt-2 px-5 py-2 text-sm font-semibold rounded-lg bg-red-600 hover:bg-red-700 cursor-pointer text-white transition-colors shadow-md"
+                            <div className="p-6">
+                                <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-white">
+                                    {city.name}
+                                </h2>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm"
+                                   dangerouslySetInnerHTML={{ __html: city.description }}
+                                />
+                            </div>
+                            <div className="px-6 pb-6 text-center flex gap-2 justify-center">
+                                <button
+                                    type="button"
+                                    onClick={() => deleteCityHandler(city.id)}
+                                    className="px-5 py-2 text-sm font-semibold rounded-lg bg-red-600 hover:bg-red-700 cursor-pointer text-white transition-colors shadow-md"
                                 >
                                     Delete
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => navigate(`/edit-city/${city.id}`)}
-                                    className="mt-2 ml-2 px-5 py-2 text-sm font-semibold rounded-lg bg-amber-300 hover:bg-amber-400 cursor-pointer text-black transition-colors shadow-md"
+                                    className="px-5 py-2 text-sm font-semibold rounded-lg bg-amber-300 hover:bg-amber-400 cursor-pointer text-black transition-colors shadow-md"
                                 >
                                     Edit
                                 </button>

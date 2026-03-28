@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import { useGetCityByIdQuery, useUpdateCityMutation } from "../../services/cityApi.ts";
 import type { ICity } from "../../types/city/ICity.ts";
+import type { UploadFile } from "antd";
+import ImagesUploader from "../../common/inputs/ImagesUploader.tsx";
 
 function EditForm({ city }: { city: ICity }) {
     const navigate = useNavigate();
@@ -12,10 +14,34 @@ function EditForm({ city }: { city: ICity }) {
     const [description, setDescription] = useState(city.description ?? "");
     const [showEditor, setShowEditor] = useState(false);
 
+    const [fileList, setFileList] = useState<UploadFile[]>(
+        city.image ? [{
+            uid: '-1',
+            name: 'image',
+            status: 'done',
+            url: city.image,
+        }] : []
+    );
+    const [imageError, setImageError] = useState(false);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (fileList.length === 0) {
+            setImageError(true);
+            return;
+        }
+
         try {
-            await updateCity({ id: city.id, name, description }).unwrap();
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+
+            if (fileList[0]?.originFileObj) {
+                formData.append('image', fileList[0].originFileObj as File);
+            }
+
+            await updateCity({ id: city.id, formData }).unwrap();
             navigate(-1);
         } catch (err) {
             console.log(err);
@@ -43,13 +69,22 @@ function EditForm({ city }: { city: ICity }) {
                     />
                 </div>
 
+                <div className="w-full text-center mb-5">
+                    <ImagesUploader
+                        fileList={fileList}
+                        setFileList={setFileList}
+                        imageError={imageError}
+                        setImageError={setImageError}
+                    />
+                </div>
+
                 <div className="mb-5">
                     <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
                         Опис
                     </label>
                     <div
                         onClick={() => setShowEditor(true)}
-                        className="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 bg-gray-50 dark:bg-slate-800 cursor-pointer"
+                        className="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 bg-gray-50 dark:bg-slate-800 cursor-pointer min-h-[42px]"
                     >
                         {description ? (
                             <div

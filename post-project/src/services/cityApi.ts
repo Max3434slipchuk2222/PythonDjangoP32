@@ -2,6 +2,7 @@ import {createApi} from "@reduxjs/toolkit/query/react";
 import {createBaseQuery} from "../utils/createBaseQuery.ts";
 import type {ICity} from "../types/city/ICity.ts";
 import type {ICityCreate} from "../types/city/ICityCreate.ts";
+import {serialize} from "object-to-formdata";
 import type {ICityEdit} from "../types/city/ICityEdit.ts";
 
 export const cityApi= createApi({
@@ -19,7 +20,13 @@ export const cityApi= createApi({
             },
             providesTags: ["Cities"]
         }),
-
+        getCityById: builder.query<ICity, number>({
+            query: (id) => ({
+                url: `${id}/`,
+                method: 'GET',
+            }),
+            providesTags: ["Cities"]
+        }),
         deleteCity: builder.mutation<void, number>({
             query: id => ({
                 url: `/${id}/`,
@@ -27,30 +34,27 @@ export const cityApi= createApi({
             }),
             invalidatesTags: ["Cities"]
         }),
-
-        createCity: builder.mutation<void, ICityCreate>({
-            query: body => ({
-                url: "/",
-                method: "POST",
-                body: body
-            }),
-            invalidatesTags: ["Cities"]
-        }),
         updateCity: builder.mutation<void, ICityEdit>({
-            query: ({ id, ...body }) => ({
+            query: ({ id, formData }) => ({
                 url: `${id}/`,
                 method: "PUT",
-                body: body
+                body: formData,
+                formData: true,
             }),
             invalidatesTags: ["Cities"]
         }),
-        getCityById: builder.query<ICity, number>({
-            query: (id) => ({
-                url: `${id}/`,
-                method: 'GET'
-            }),
-            providesTags: ["Cities"]
+        createCity: builder.mutation<void, ICityCreate>({
+            query: (body) => {
+                const formData = serialize(body);
+                return {
+                    url: "/",
+                    method: "POST",
+                    body: formData
+                }
+            },
+            invalidatesTags: ["Cities"]
         }),
+
     })
 });
 
