@@ -54,7 +54,6 @@ export const cityApi= createApi({
             },
             invalidatesTags: ["Cities"]
         }),
-
     })
 });
 
