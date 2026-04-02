@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-k&gp_gn_k)3s5e2m7&lwf2$@lp9%=0tfq4ml&u7df^c+@9#j-l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,7 +56,6 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -67,6 +66,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:4512",
+    "http://localhost:4518",
+    "http://127.0.0.1:4518",
 ]
 
 ROOT_URLCONF = 'myapi.urls'
@@ -95,11 +97,11 @@ WSGI_APPLICATION = 'myapi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'ep-frosty-cherry-am27wy2w-pooler.c-5.us-east-1.aws.neon.tech',
-        'NAME': 'neondb',
-        'USER': 'neondb_owner',
-        'PASSWORD': 'npg_Tb6JiQxO4cjd',
-        'PORT': '5432'
+        'NAME': 'halosh_db',
+        'USER': 'halosh',
+        'PASSWORD': 'p%rSDj4Imds07djc**dmUntdOidd3dZ_#WTi4B9Zo',
+        'HOST': '172.30.133.106',
+        'PORT': '5024',
     }
 }
 
